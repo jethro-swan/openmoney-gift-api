@@ -1,0 +1,2365 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "Giftcard API",
+        "description": "Giftcard API",
+        "contact": {
+            "name": "Dominique Legault",
+            "email": "deefactorial@gmail.com",
+            "url": "http://prooudleo.com"
+        },
+        "license": {
+            "name": "Copywrite 2016"
+        }
+    },
+    "host": "deefactorial.proudleo.com",
+    "basePath": "/V1",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json",
+        "text/html"
+    ],
+    "paths": {
+        "/merchants": {
+            "get": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9/+=]*$"
+                    }
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of merchants",
+                        "schema": {
+                            "$ref": "#/definitions/merchant_list"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsPost",
+                "parameters": [
+                    {
+                        "name": "merchant_request",
+                        "in": "body",
+                        "description": "Registration Request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchants_request"
+                        }
+                    }
+                ],
+                "description": "Register a steward on the system",
+                "tags": [
+                    "merchants"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registration Success",
+                        "schema": {
+                            "$ref": "#/definitions/merchant_response"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/forgot": {
+            "post": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsForgot",
+                "parameters": [
+                    {
+                        "name": "forgot_request",
+                        "in": "body",
+                        "description": "Forgot Request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forgot_request"
+                        }
+                    }
+                ],
+                "description": "Forgot Password Request",
+                "tags": [
+                    "merchants"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Forgot Success",
+                        "schema": {
+                            "$ref": "#/definitions/forgot_response"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/reset": {
+            "post": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsReset",
+                "parameters": [
+                    {
+                        "name": "reset_request",
+                        "in": "body",
+                        "description": "Reset Request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reset_request"
+                        }
+                    }
+                ],
+                "description": "Reset Password Request",
+                "tags": [
+                    "merchants"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reset Success",
+                        "schema": {
+                            "$ref": "#/definitions/reset_response"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}": {
+            "get": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsGet",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    }
+                ],
+                "description": "Get a single Merchant",
+                "tags": [
+                    "merchants"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Merchant",
+                        "schema": {
+                            "$ref": "#/definitions/merchants_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsPut",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "merchant_request",
+                        "required": true,
+                        "description": "Merchant Document",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/merchant_update_request"
+                        }
+                    }
+                ],
+                "description": "Update your merchant account",
+                "tags": [
+                    "merchants"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "merchants",
+                        "schema": {
+                            "$ref": "#/definitions/update_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsDelete",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 1024,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    }
+                ],
+                "description": "Delete your merchant account",
+                "tags": [
+                    "merchants"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "merchant",
+                        "schema": {
+                            "$ref": "#/definitions/delete_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/support": {
+            "post": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsSupportPost",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/support_request"
+                        }
+                    }
+                ],
+                "description": "Submit Support Request.",
+                "tags": [
+                    "merchants"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/support_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/currencies": {
+            "post": {
+                "x-swagger-router-controller": "Merchants",
+                "operationId": "merchantsCurrenciesPost",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "currency",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/currency_request"
+                        }
+                    }
+                ],
+                "description": "Create New Currency",
+                "tags": [
+                    "merchants"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/employees": {
+            "get": {
+                "x-swagger-router-controller": "Employees",
+                "operationId": "employeeList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 5
+                    }
+                ],
+                "description": "List of employees",
+                "tags": [
+                    "employees"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of employee",
+                        "schema": {
+                            "$ref": "#/definitions/employees_list"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "x-swagger-router-controller": "Employees",
+                "operationId": "employeePost",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "employee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/employees_request"
+                        }
+                    }
+                ],
+                "description": "Create New Employee",
+                "tags": [
+                    "employees"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/employees/{employeeID}": {
+            "get": {
+                "x-swagger-router-controller": "Employees",
+                "operationId": "employeeGet",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "employeeID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "employee id"
+                    }
+                ],
+                "description": "Get an employee by employeeID",
+                "tags": [
+                    "employees"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/employees_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "x-swagger-router-controller": "Employees",
+                "operationId": "employeePut",
+                "description": "Update Employee",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "employeeID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 512,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "employee",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/employees_request"
+                        }
+                    }
+                ],
+                "tags": [
+                    "employees"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Employees",
+                "operationId": "employeeDelete",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "employeeID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 1048,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "employee ID"
+                    }
+                ],
+                "description": "Delete a employee",
+                "tags": [
+                    "employees"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/delete_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cardholders": {
+            "get": {
+                "x-swagger-router-controller": "Cardholders",
+                "operationId": "cardholderList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 5
+                    }
+                ],
+                "description": "List of cardholders",
+                "tags": [
+                    "cardholders"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of cardholders",
+                        "schema": {
+                            "$ref": "#/definitions/cardholders_list"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "x-swagger-router-controller": "Cardholders",
+                "operationId": "cardholderPost",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardholder",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cardholders_request"
+                        }
+                    }
+                ],
+                "description": "Create New Cardholder",
+                "tags": [
+                    "cardholders"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cardholders/{cardholder_firstname}/{cardholder_lastname}": {
+            "get": {
+                "x-swagger-router-controller": "Cardholders",
+                "operationId": "cardholderGet",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardholder_firstname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "cardholders firstname"
+                    },
+                    {
+                        "name": "cardholder_lastname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "cardholders lastname"
+                    }
+                ],
+                "description": "Get a cardholder by cardholderID",
+                "tags": [
+                    "cardholders"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/cardholders_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "x-swagger-router-controller": "Cardholders",
+                "operationId": "cardholdersPut",
+                "description": "Update Cardholder",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardholder_firstname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "cardholders firstname"
+                    },
+                    {
+                        "name": "cardholder_lastname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "cardholders lastname"
+                    },
+                    {
+                        "name": "cardholder",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/cardholders_request"
+                        }
+                    }
+                ],
+                "tags": [
+                    "cardholders"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Cardholders",
+                "operationId": "cardholderDelete",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardholder_firstname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "cardholders firstname"
+                    },
+                    {
+                        "name": "cardholder_lastname",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$",
+                        "description": "cardholders lastname"
+                    }
+                ],
+                "description": "Delete a cardholder",
+                "tags": [
+                    "cardholders"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete success",
+                        "schema": {
+                            "$ref": "#/definitions/delete_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cards": {
+            "get": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "cardsList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 5
+                    }
+                ],
+                "description": "List cards",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of cards",
+                        "schema": {
+                            "$ref": "#/definitions/cards_list"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "cardPost",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "card",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/cards_request"
+                        }
+                    }
+                ],
+                "description": "Create a card",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cards/{cardID}": {
+            "put": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "cardsPut",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "card",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/cards_request"
+                        }
+                    }
+                ],
+                "description": "Update a card",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cards/{cardID}/giftload": {
+            "post": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "cardsLoad",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "giftload",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/load_request"
+                        }
+                    }
+                ],
+                "description": "Load a card with a value",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/load_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cards/{cardID}/giftredeem": {
+            "post": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "cardsRedeem",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "giftredeem",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/redeem_request"
+                        }
+                    }
+                ],
+                "description": "Redeem a card with a value",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/redeem_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/cards/{cardID}/balance": {
+            "get": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "cardsBalance",
+                "parameters": [
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "cardID",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    }
+                ],
+                "description": "get the balance remaining on a card",
+                "tags": [
+                    "cards"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/card_balance"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/reports": {
+            "get": {
+                "x-swagger-router-controller": "Reports",
+                "operationId": "reportsList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "start_period",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "start period in miliseconds since epoch"
+                    },
+                    {
+                        "name": "end_period",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "end period in milliseconds since epoch"
+                    },
+                    {
+                        "name": "cardholderID",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 5
+                    }
+                ],
+                "description": "Gets a listing of transactions, filter by cardholder or start and end periods.",
+                "tags": [
+                    "reports"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reports_list"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/templates": {
+            "post": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "templatesPost",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "template",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/template_request"
+                        }
+                    }
+                ],
+                "description": "Template Post",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/template_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "templatesList",
+                "parameters": [
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    {
+                        "name": "range",
+                        "in": "query",
+                        "type": "integer",
+                        "minimum": 5
+                    }
+                ],
+                "description": "List Templates",
+                "tags": [
+                    "cards"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/templates_list"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchantname}/templates/{templateName}": {
+            "put": {
+                "x-swagger-router-controller": "Cards",
+                "operationId": "templatesPut",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "description": "Authorization Token",
+                        "in": "header",
+                        "type": "string",
+                        "pattern": "^Basic [A-Za-z0-9=/+]+$"
+                    },
+                    {
+                        "name": "merchantname",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "templateName",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "maxLength": 255,
+                        "pattern": "^[A-Za-z0-9_.-]+$"
+                    },
+                    {
+                        "name": "template",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/template_request"
+                        }
+                    }
+                ],
+                "description": "Update a template",
+                "tags": [
+                    "cards"
+                ],
+                "security": [
+                    {
+                        "password": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update_response"
+                        }
+                    },
+                    "default": {
+                        "description": "error payload",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "password": {
+            "type": "basic"
+        }
+    },
+    "definitions": {
+        "merchant_list": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/merchants_response"
+            }
+        },
+        "employees_list": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/employees_response"
+            }
+        },
+        "cardholders_list": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/cardholders_response"
+            }
+        },
+        "cards_list": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/cards_response"
+            }
+        },
+        "reports_list": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/reports_response"
+            }
+        },
+        "templates_list": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/templates_response"
+            }
+        },
+        "create_response": {
+            "type": "object",
+            "required": [
+                "ok"
+            ],
+            "properties": {
+                "ok": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "update_response": {
+            "type": "object",
+            "required": [
+                "ok"
+            ],
+            "properties": {
+                "ok": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "delete_response": {
+            "type": "object",
+            "required": [
+                "ok"
+            ],
+            "properties": {
+                "ok": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "modification": {
+            "type": "object",
+            "properties": {
+                "modified": {
+                    "type": "integer",
+                    "description": "timestamp in milliseconds since epoch"
+                },
+                "modified_by": {
+                    "type": "string",
+                    "description": "merchant who made modification"
+                },
+                "modification": {
+                    "type": "string",
+                    "description": "human readable description of modification"
+                }
+            }
+        },
+        "merchants_request": {
+            "type": "object",
+            "minProperties": 2,
+            "maxProperties": 9,
+            "required": [
+                "merchantname",
+                "password"
+            ],
+            "properties": {
+                "merchantname": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 800
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                }
+            }
+        },
+        "merchants_response": {
+            "type": "object",
+            "required": [
+                "merchantname"
+            ],
+            "properties": {
+                "merchantname": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                },
+                "email_notifications": {
+                    "type": "boolean"
+                },
+                "created": {
+                    "type": "integer",
+                    "description": "timestamp in milliseconds since epoch"
+                },
+                "created_by": {
+                    "type": "string",
+                    "description": "merchant of who created object"
+                },
+                "modifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modification"
+                    }
+                }
+            }
+        },
+        "forgot_request": {
+            "type": "object",
+            "properties": {
+                "merchantname": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                }
+            }
+        },
+        "forgot_response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "object"
+                }
+            }
+        },
+        "reset_request": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "forgot_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "reset_response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "object"
+                }
+            }
+        },
+        "currency_request": {
+            "type": "object",
+            "properties": {
+                "currency": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "currency_name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-\\s]+$"
+                },
+                "currency_color": {
+                    "maxLength": 32,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                }
+            }
+        },
+        "employees_request": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string",
+                    "description": "A numerical code that can be used to authenticate employee."
+                },
+                "is_merchant_owner": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "employees_response": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "is_merchant_owner": {
+                    "type": "boolean"
+                },
+                "created": {
+                    "type": "integer",
+                    "description": "timestamp in milliseconds since epoch"
+                },
+                "created_by": {
+                    "type": "string",
+                    "description": "merchant of who created object"
+                },
+                "modifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modification"
+                    }
+                }
+            }
+        },
+        "cards_request": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "maxLength": 800,
+                    "pattern": "^[A-Za-z0-9_-]+$"
+                },
+                "gift": {
+                    "type": "number"
+                },
+                "promo": {
+                    "type": "number"
+                },
+                "points": {
+                    "type": "number"
+                },
+                "tab": {
+                    "type": "number"
+                },
+                "stamp": {
+                    "type": "number"
+                },
+                "employeeID": {
+                    "type": "string"
+                },
+                "cardholderID": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "cards_response": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "maxLength": 800,
+                    "pattern": "^[A-Za-z0-9_-]+$"
+                },
+                "gift": {
+                    "type": "number"
+                },
+                "promo": {
+                    "type": "number"
+                },
+                "points": {
+                    "type": "number"
+                },
+                "tab": {
+                    "type": "number"
+                },
+                "stamp": {
+                    "type": "number"
+                },
+                "cardholderID": {
+                    "type": "string"
+                },
+                "employeeID": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "integer",
+                    "description": "timestamp in milliseconds since epoch"
+                },
+                "created_by": {
+                    "type": "string",
+                    "description": "merchant of who created object"
+                },
+                "modifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modification"
+                    }
+                },
+                "merchantname": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_-]+$"
+                }
+            }
+        },
+        "cardholders_request": {
+            "type": "object",
+            "required": [
+                "firstname",
+                "lastname"
+            ],
+            "properties": {
+                "firstname": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "lastname": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "address1": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "address2": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "phone": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "email": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                }
+            }
+        },
+        "cardholders_response": {
+            "type": "object",
+            "required": [
+                "firstname",
+                "lastname"
+            ],
+            "properties": {
+                "firstname": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "lastname": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "address1": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "address2": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "phone": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]*$"
+                },
+                "email": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                },
+                "created": {
+                    "type": "integer",
+                    "description": "timestamp in milliseconds since epoch"
+                },
+                "created_by": {
+                    "type": "string",
+                    "description": "merchant of who created object"
+                },
+                "modifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modification"
+                    }
+                },
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/cards_response"
+                    }
+                }
+            }
+        },
+        "load_request": {
+            "type": "object",
+            "properties": {
+                "gift": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "promo": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "points": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "tab": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "stamp": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "employeeID": {
+                    "type": "string"
+                }
+            }
+        },
+        "load_response": {
+            "type": "object",
+            "properties": {
+                "gift": {
+                    "type": "number"
+                },
+                "promo": {
+                    "type": "number"
+                },
+                "points": {
+                    "type": "number"
+                },
+                "tab": {
+                    "type": "number"
+                },
+                "stamp": {
+                    "type": "number"
+                },
+                "created": {
+                    "type": "integer",
+                    "description": "timestamp in milliseconds since epoch"
+                },
+                "created_by": {
+                    "type": "string",
+                    "description": "merchant of who created object"
+                }
+            }
+        },
+        "redeem_request": {
+            "type": "object",
+            "properties": {
+                "gift": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "promo": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "points": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "tab": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "stamp": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "employeeID": {
+                    "type": "string"
+                }
+            }
+        },
+        "redeem_response": {
+            "type": "object",
+            "properties": {
+                "gift": {
+                    "type": "number"
+                },
+                "giftVolume": {
+                    "type": "number"
+                },
+                "points": {
+                    "type": "number"
+                },
+                "pointsVolume": {
+                    "type": "number"
+                },
+                "promo": {
+                    "type": "number"
+                },
+                "promoVolume": {
+                    "type": "number"
+                },
+                "tab": {
+                    "type": "number"
+                },
+                "tabVolume": {
+                    "type": "number"
+                },
+                "stamp": {
+                    "type": "number"
+                },
+                "stampVolume": {
+                    "type": "number"
+                }
+            }
+        },
+        "card_balance": {
+            "type": "object",
+            "properties": {
+                "gift": {
+                    "type": "number"
+                },
+                "giftVolume": {
+                    "type": "number"
+                },
+                "points": {
+                    "type": "number"
+                },
+                "pointsVolume": {
+                    "type": "number"
+                },
+                "promo": {
+                    "type": "number"
+                },
+                "promoVolume": {
+                    "type": "number"
+                },
+                "tab": {
+                    "type": "number"
+                },
+                "tabVolume": {
+                    "type": "number"
+                },
+                "stamp": {
+                    "type": "number"
+                },
+                "stampVolume": {
+                    "type": "number"
+                }
+            }
+        },
+        "reports_response": {
+            "type": "object",
+            "required": [
+                "load",
+                "redeem",
+                "amount",
+                "currency",
+                "timestamp"
+            ],
+            "properties": {
+                "employeeID": {
+                    "type": "string"
+                },
+                "load": {
+                    "type": "boolean"
+                },
+                "redeem": {
+                    "type": "boolean"
+                },
+                "amount": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "integer"
+                }
+            }
+        },
+        "template_request": {
+            "type": "object",
+            "properties": {
+                "templateName": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                }
+            }
+        },
+        "template_response": {
+            "type": "object",
+            "properties": {
+                "ok": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "templates_response": {
+            "type": "object",
+            "properties": {
+                "templateName": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchant_update_request": {
+            "type": "object",
+            "minProperties": 1,
+            "maxProperties": 3,
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 800
+                },
+                "email": {
+                    "type": "string",
+                    "description": "merchant email address",
+                    "format": "email",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                },
+                "email_notifications": {
+                    "type": "boolean",
+                    "description": "Does merchant wish to receive email notifications"
+                }
+            }
+        },
+        "merchant_response": {
+            "type": "object",
+            "required": [
+                "merchantname",
+                "email",
+                "email_notifications"
+            ],
+            "properties": {
+                "merchantname": {
+                    "type": "string",
+                    "description": "merchant username",
+                    "maxLength": 255,
+                    "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "merchant email address",
+                    "format": "email",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                },
+                "email_notifications": {
+                    "type": "boolean",
+                    "description": "Does merchant wish to receive email notifications"
+                }
+            }
+        },
+        "support_request": {
+            "type": "object",
+            "properties": {
+                "request": {
+                    "type": "string",
+                    "description": "user provided support request to be emailed.",
+                    "minLength": 1,
+                    "maxLength": 2048
+                },
+                "email": {
+                    "type": "string",
+                    "description": "merchant email address",
+                    "format": "email",
+                    "maxLength": 255,
+                    "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
+                }
+            }
+        },
+        "support_response": {
+            "type": "object",
+            "properties": {
+                "sent": {
+                    "type": "boolean",
+                    "description": "if the email has been sent"
+                }
+            }
+        },
+        "ErrorModel": {
+            "type": "object",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "failedValidation": {
+                    "type": "boolean"
+                },
+                "results": {
+                    "$ref": "#/definitions/ErrorResults"
+                },
+                "originalResponse": {
+                    "type": "string"
+                }
+            }
+        },
+        "ErrorResults": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorObject"
+                    }
+                },
+                "warnings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorObject"
+                    }
+                }
+            }
+        },
+        "ErrorObject": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "desccription": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
