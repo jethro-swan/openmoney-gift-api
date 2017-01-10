@@ -5,7 +5,7 @@ var cardholders = require('../model/cardholders');
 var cards = require('../model/cards');
 var async = require('async');
 var oauth = require('../helpers/oauth');
-var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-client2/src/');
+var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-client3/src/');
 
 exports.cardholderList = function(args, res, next) {
   /**

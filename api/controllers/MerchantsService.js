@@ -4,7 +4,7 @@ var scrypt = require('scrypt');
 var scryptParameters = scrypt.paramsSync(1.0);
 var crypto = require('crypto');
 var merchants = require('../model/merchants');
-var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-client/src/');
+var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-client3/src/');
 var oauth = require('../helpers/oauth');
 var response = require('../helpers/response');
 var async = require('async');
@@ -66,7 +66,7 @@ exports.merchantsSupportPost = function(args, res, next) {
 
       //var to = 'deefactorial@gmail.com, michael.linton@gmail.com';
       var to = process.env.API_STEWARDS
-      var subject = 'Openmoney.gift Support Request: ' + args.merchantname.value;
+      var subject = 'Openmoney.Gift Support Request: ' + args.merchantname.value;
       var messageHTML = '<div><h1>Support Request For: ' + args.merchantname.value + '</h1></div>';
       messageHTML += '<div><h3>Request:</h3> ' + request.request + '</div>'
       var messageText = messageHTML.replace(/<\/?[^>]+(>|$)/g, "");
@@ -271,7 +271,10 @@ exports.merchantsReset = function(args, res, next) {
 
               var stewardsApi = new openmoneyApi.StewardsApi();
               var authorization = 'Bearer ' + access_token;
-              stewardsApi.stewardsPut(steward.stewardname, steward, authorization, function(err, data, result){
+              var opts = {};
+              opts.authorization = authorization;
+
+              stewardsApi.stewardsPut(steward.stewardname, steward, opts, function(err, data, result){
                 if(err){
                   console.error(err);
                   var error = {};
@@ -533,7 +536,10 @@ exports.merchantsPut = function(args, res, next) {
 
               var stewardsApi = new openmoneyApi.StewardsApi();
               var authorization = 'Bearer ' + access_token;
-              stewardsApi.stewardsPut(steward.stewardname, steward, authorization, function(err, data, result){
+              var opts = {};
+              opts.authorization = authorization;
+
+              stewardsApi.stewardsPut(steward.stewardname, steward, opts, function(err, data, result){
                 if(err){
                   console.error(err);
                   var error = {};
@@ -798,14 +804,14 @@ exports.merchantsPost = function(args, res, next) {
 
   stewardsApi.stewardsPost(steward, function(err, data, result){
     if(err){
-      if(result.body.code == 1010) {
+      console.error(err, data, result);
+      if(typeof result != 'undefined' && result.body.code == 1010) {
         var error = {};
         error.code = 'MERCHANT_EXISTS';
         error.message = 'That merchant name is already taken.';
         error.status = 400;
         response.respond(error, res);
       } else {
-        console.error(result.body);
         var error = {};
         error.code = 'OPENMONEY_SERVICE_ERROR';
         error.message = 'Openmoney Service Error.';
@@ -901,7 +907,12 @@ exports.merchantsPost = function(args, res, next) {
                 gift_currency.disabled = false;
                 var currenciesApi = new openmoneyApi.CurrenciesApi();
                 var authorization = 'Bearer ' + access_token;
-                currenciesApi.currenciesPost(steward.stewardname, gift_currency.currency_namespace, authorization, gift_currency, function(err, data, ok){
+
+                var opts = {};
+                opts.currency = gift_currency;
+                opts.authorization = authorization;
+
+                currenciesApi.currenciesPost(steward.stewardname, opts, function(err, data, ok){
                   console.info(ok.body);
                   callback(err, ok.body);
                 });
@@ -921,7 +932,11 @@ exports.merchantsPost = function(args, res, next) {
                 points_currency.private = true;
                 var currenciesApi = new openmoneyApi.CurrenciesApi();
                 var authorization = 'Bearer ' + access_token;
-                currenciesApi.currenciesPost(steward.stewardname, points_currency.currency_namespace, authorization, points_currency, function(err, data, ok){
+                var opts = {};
+                opts.currency = points_currency;
+                opts.authorization = authorization;
+
+                currenciesApi.currenciesPost(steward.stewardname, opts, function(err, data, ok){
                   console.info([err,data,ok]);
                   callback(err, data);
                 });
@@ -941,7 +956,11 @@ exports.merchantsPost = function(args, res, next) {
                 promo_currency.private = true;
                 var currenciesApi = new openmoneyApi.CurrenciesApi();
                 var authorization = 'Bearer ' + access_token;
-                currenciesApi.currenciesPost(steward.stewardname, promo_currency.currency_namespace, authorization, promo_currency, function(err, data, ok){
+                var opts = {};
+                opts.currency = promo_currency;
+                opts.authorization = authorization;
+
+                currenciesApi.currenciesPost(steward.stewardname, opts, function(err, data, ok){
                   console.info([err,data,ok]);
                   callback(err, data);
                 });
@@ -961,7 +980,11 @@ exports.merchantsPost = function(args, res, next) {
                 tab_currency.private = true;
                 var currenciesApi = new openmoneyApi.CurrenciesApi();
                 var authorization = 'Bearer ' + access_token;
-                currenciesApi.currenciesPost(steward.stewardname, tab_currency.currency_namespace, authorization, tab_currency, function(err, data, ok){
+                var opts = {};
+                opts.currency = tab_currency;
+                opts.authorization = authorization;
+
+                currenciesApi.currenciesPost(steward.stewardname, opts, function(err, data, ok){
                   console.info([err,data,ok]);
                   callback(err, data);
                 });
@@ -981,7 +1004,12 @@ exports.merchantsPost = function(args, res, next) {
                 stamp_currency.private = true;
                 var currenciesApi = new openmoneyApi.CurrenciesApi();
                 var authorization = 'Bearer ' + access_token;
-                currenciesApi.currenciesPost(steward.stewardname, stamp_currency.currency_namespace, authorization, stamp_currency, function(err, data, ok){
+
+                var opts = {};
+                opts.currency = stamp_currency;
+                opts.authorization = authorization;
+
+                currenciesApi.currenciesPost(steward.stewardname, opts, function(err, data, ok){
                   console.info([err,data,ok]);
                   callback(err, data);
                 });
@@ -1003,7 +1031,11 @@ exports.merchantsPost = function(args, res, next) {
                 //account.publicKey = card.key;
 
                 console.info(account);
-                accountsApi.accountsPost(stewardname, namespace, authorization, account, function(err, data, response){
+                var opts = {};
+                opts.account = account;
+                opts.authorization = authorization;
+
+                accountsApi.accountsPost(stewardname, namespace, opts, function(err, data, response){
                   callback(err, data);
                 });//accountsPost
               };//giftcardCreate
@@ -1023,7 +1055,11 @@ exports.merchantsPost = function(args, res, next) {
                 //account.publicKey = card.key;
 
                 console.info(account);
-                accountsApi.accountsPost(stewardname, namespace, authorization, account, function(err, data, response){
+                var opts = {};
+                opts.account = account;
+                opts.authorization = authorization;
+
+                accountsApi.accountsPost(stewardname, namespace, opts, function(err, data, response){
                   callback(err, data);
                 });//accountsPost
               };//giftcardOmdevCreate
@@ -1044,7 +1080,11 @@ exports.merchantsPost = function(args, res, next) {
                 //account.publicKey = card.key;
 
                 console.log(account)
-                accountsApi.accountsPost(stewardname, namespace, authorization, account, function(err, data, response){
+                var opts = {};
+                opts.account = account;
+                opts.authorization = authorization;
+
+                accountsApi.accountsPost(stewardname, namespace, opts, function(err, data, response){
                   callback(err, data);
                 });//accountsPost
               };//pointsCreate
@@ -1086,7 +1126,11 @@ exports.merchantsPost = function(args, res, next) {
                 //account.publicKey = card.key;
 
                 console.log(account)
-                accountsApi.accountsPost(stewardname, namespace, authorization, account, function(err, data, response){
+                var opts = {};
+                opts.account = account;
+                opts.authorization = authorization;
+
+                accountsApi.accountsPost(stewardname, namespace, opts, function(err, data, response){
                   callback(err, data);
                 });//accountsPost
               };//promoCreate
@@ -1128,7 +1172,11 @@ exports.merchantsPost = function(args, res, next) {
                 //account.publicKey = card.key;
 
                 console.log(account)
-                accountsApi.accountsPost(stewardname, namespace, authorization, account, function(err, data, response){
+                var opts = {};
+                opts.account = account;
+                opts.authorization = authorization;
+
+                accountsApi.accountsPost(stewardname, namespace, opts, function(err, data, response){
                   callback(err, data);
                 });//accountsPost
               };//tabCreate
@@ -1170,7 +1218,11 @@ exports.merchantsPost = function(args, res, next) {
                 //account.publicKey = card.key;
 
                 console.log(account)
-                accountsApi.accountsPost(stewardname, namespace, authorization, account, function(err, data, response){
+                var opts = {};
+                opts.account = account;
+                opts.authorization = authorization;
+
+                accountsApi.accountsPost(stewardname, namespace, opts, function(err, data, response){
                   callback(err, data);
                 });//accountsPost
               };//stampCreate
@@ -1290,7 +1342,11 @@ exports.merchantsCurrenciesPost = function(args, res, next) {
           console.info('in currencyPost');
           var currenciesApi = new openmoneyApi.CurrenciesApi();
           var authorization = 'Bearer ' + access_token;
-          currenciesApi.currenciesPost(args.merchantname.value, currency.currency_namespace, authorization, currency, function(err, data, ok){
+          var opts = {};
+          opts.authorization = authorization;
+          opts.currency = currency;
+
+          currenciesApi.currenciesPost(args.merchantname.value, opts, function(err, data, ok){
             console.info('currencies post result', err, data, ok);
             if(typeof ok != 'undefined'){
               callback(err, ok.body);
@@ -1307,7 +1363,11 @@ exports.merchantsCurrenciesPost = function(args, res, next) {
           var authorization = 'Bearer ' + access_token;
 
           console.info(account);
-          accountsApi.accountsPost(args.merchantname.value, account.account_namespace, authorization, account, function(err, data, response){
+          var opts = {};
+          opts.account = account;
+          opts.authorization = authorization;
+
+          accountsApi.accountsPost(args.merchantname.value, account.account_namespace, opts, function(err, data, response){
             callback(err, data);
           });//accountsPost
         };//giftcardCreate

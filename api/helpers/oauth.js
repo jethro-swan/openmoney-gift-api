@@ -1,4 +1,4 @@
-var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-client/src/');
+var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-client3/src/');
 var cache = [];
 var merchants = require('../model/merchants');
 var scrypt = require('scrypt');
@@ -56,7 +56,9 @@ exports.authenticate = function (merchantname, callback){
           request.password = merchant.password;
 
           var oauthAPI = new openmoneyApi.AuthApi();
-          oauthAPI.oauthAccessTokenPost(merchantname, request, authorization, function(err, data, response){
+          var opts = {};
+          opts.authorization = authorization;
+          oauthAPI.oauthAccessTokenPost(merchantname, request, opts, function(err, data, response){
             if(err){
               console.error(err);
               var error = {};
@@ -124,7 +126,9 @@ function RefreshToken(merchantname, refresh_token, callback){
   request.refresh_token = refresh_token;
 
   var oauthAPI = new openmoneyApi.AuthApi();
-  oauthAPI.oauthAccessTokenPost(merchantname, request, authorization, function(err, data, response){
+  var opts = {};
+  opts.authorization = authorization;
+  oauthAPI.oauthAccessTokenPost(merchantname, request, opts, function(err, data, response){
     callback(err, response.body);
   });
 }//RefreshToken
