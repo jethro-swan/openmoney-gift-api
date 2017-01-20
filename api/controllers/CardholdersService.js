@@ -364,9 +364,8 @@ exports.cardholdersPut = function(args, res, next) {
         var cardholder = args.cardholder.value;
         if(cardholder.firstname != cardholder_firstname || cardholder.lastname != cardholder_lastname){
           //change in cardholder name
-          //delete old cardholder and intesert new
-          console.info(old_cardholder);
-          cardholders.deleteCardholder(old_cardholder, function(err, ok){
+          //check that there isn't any cards assigned to this cardholder.
+          cards.listCardsByCardholderId(args.merchantname.value, id, 0, 5, function(err, cards){
             if(err){
               console.error(err);
               var error = {};
@@ -374,41 +373,65 @@ exports.cardholdersPut = function(args, res, next) {
               error.message = 'Cannot delete data from database.';
               error.status = 500;
               response.respond(error, res);
-            } else { //if err
-              delete(old_cardholder._id);
-              delete(old_cardholder._rev);
-              delete(old_cardholder.firstname);
-              old_cardholder.firstname = cardholder.firstname;
-              old_cardholder.lastname = cardholder.lastname;
-              if(typeof cardholder.address1 != 'undefined'){
-                old_cardholder.address1 = cardholder.address1;
-              }
-              if(typeof cardholder.address2 != 'undefined'){
-                old_cardholder.address2 = cardholder.address2;
-              }
-              if(typeof cardholder.phone != 'undefined'){
-                old_cardholder.phone = cardholder.phone;
-              }
-              if(typeof cardholder.email != 'undefined'){
-                old_cardholder.email = cardholder.email;
-              }
+            } else {
+              console.log('cards:', cards);
+              if(cards.docs.length > 0){
+                var error = {};
+                error.code = 'GIFTCARD_CARDS_ERROR';
+                error.message = 'Cannot change patrons name after creating cards.';
+                error.status = 403;
+                response.respond(error, res);
+              } else {
+                //delete old cardholder and intesert new
+                console.info(old_cardholder);
+                cardholders.deleteCardholder(old_cardholder, function(err, ok){
+                  if(err){
+                    console.error(err);
+                    var error = {};
+                    error.code = 'GIFTCARD_DB_ERROR';
+                    error.message = 'Cannot delete data from database.';
+                    error.status = 500;
+                    response.respond(error, res);
+                  } else { //if err
+                    console.log('deleted:', old_cardholder, ok);
+                    delete(old_cardholder._id);
+                    delete(old_cardholder._rev);
+                    delete(old_cardholder.firstname);
+                    old_cardholder.firstname = cardholder.firstname;
+                    old_cardholder.lastname = cardholder.lastname;
+                    if(typeof cardholder.address1 != 'undefined'){
+                      old_cardholder.address1 = cardholder.address1;
+                    }
+                    if(typeof cardholder.address2 != 'undefined'){
+                      old_cardholder.address2 = cardholder.address2;
+                    }
+                    if(typeof cardholder.phone != 'undefined'){
+                      old_cardholder.phone = cardholder.phone;
+                    }
+                    if(typeof cardholder.email != 'undefined'){
+                      old_cardholder.email = cardholder.email;
+                    }
 
-              old_cardholder._id = old_cardholder.type + args.merchantname.value + '~' + old_cardholder.firstname + '~' + old_cardholder.lastname;
-              cardholders.insertCardholder(old_cardholder, function(err, ok){
-                if(err){
-                  console.error(err);
-                  var error = {};
-                  error.code = 'GIFTCARD_DB_ERROR';
-                  error.message = 'Cannot insert into database.';
-                  error.status = 500;
-                  response.respond(error, res);
-                } else {
-                  delete(ok.rev);
-                  response.respond(ok, res);
-                }//else err
-              });//insert
-            }//else err
-          });
+                    old_cardholder._id = old_cardholder.type + args.merchantname.value + '~' + old_cardholder.firstname + '~' + old_cardholder.lastname;
+                    cardholders.insertCardholder(old_cardholder, function(err, ok){
+                      if(err){
+                        console.error(err);
+                        var error = {};
+                        error.code = 'GIFTCARD_DB_ERROR';
+                        error.message = 'Cannot insert into database.';
+                        error.status = 500;
+                        response.respond(error, res);
+                      } else {
+                        delete(ok.rev);
+                        response.respond(ok, res);
+                      }//else err
+                    });//insert
+                  }//else err
+                });
+              }
+            }
+          })
+
         } else {//if name change
           var change = false;
 

@@ -64,8 +64,8 @@ if(DATABASE_TYPE == 'couchbase') {
   exports.listCardsByGift = function(merchantname, offset, range, callback){
     db.find({
       selector: { type: 'cards~', merchantname: merchantname, gift: {'$gt': null} },
-      fields: ['_id', 'key', 'gift'],
-      sort: ['balance'],
+      fields: ['_id', 'key', 'balances.dollars'],
+      sort: ['balances.dollars'],
       skip: offset,
       limit: range
     }).then(function (result) {
@@ -80,8 +80,25 @@ if(DATABASE_TYPE == 'couchbase') {
   exports.listCardsByPoints = function(merchantname, offset, range, callback){
     db.find({
       selector: { type: 'cards~', merchantname: merchantname, points: {'$gt': null} },
-      fields: ['_id', 'key', 'points'],
-      sort: ['points'],
+      fields: ['_id', 'key', 'balances.points'],
+      sort: ['balances.points'],
+      skip: offset,
+      limit: range
+    }).then(function (result) {
+      // yo, a result
+      callback(null, result);
+    }).catch(function (err) {
+      // ouch, an error
+      callback(err);
+    });
+  }//listCardsByPoints
+
+  exports.listCardsByCardholderId = function(merchantname, cardholderId, offset, range, callback){
+    console.log('listCardsByCardholderId',merchantname,  cardholderId);
+    db.find({
+      selector: { type: 'cards~', merchantname: merchantname, cardholderID: cardholderId },
+      fields: ['_id', 'key', 'balances', 'cardholderID'],
+      sort: ['cardholderID'],
       skip: offset,
       limit: range
     }).then(function (result) {
@@ -97,12 +114,12 @@ if(DATABASE_TYPE == 'couchbase') {
     db.put(card).then(function(response){
       db.createIndex({
         index: {
-          fields: ['balance']
+          fields: ['balances.dollars', 'balances.points']
         }
       }).then(function (result) {
         db.createIndex({
           index: {
-            fields: ['points']
+            fields: ['cardholderID']
           }
         }).then(function (result) {
           // yo, a result
