@@ -1111,7 +1111,7 @@ definitions:
         format: email
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
   merchants_response:
     type: object
     required:
@@ -1126,7 +1126,7 @@ definitions:
         format: email
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
       email_notifications:
         type: boolean
       created:
@@ -1151,7 +1151,7 @@ definitions:
         format: email
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
   forgot_response:
     type: object
     properties:
@@ -1305,7 +1305,7 @@ definitions:
         type: string
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
   cardholders_response:
     type: object
     required:
@@ -1336,7 +1336,7 @@ definitions:
         type: string
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
       created:
         type: integer
         description: timestamp in milliseconds since epoch
@@ -1509,7 +1509,7 @@ definitions:
         format: email
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
       email_notifications:
         type: boolean
         description: Does merchant wish to receive email notifications
@@ -1531,7 +1531,7 @@ definitions:
         format: email
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
       email_notifications:
         type: boolean
         description: Does merchant wish to receive email notifications
@@ -1549,7 +1549,7 @@ definitions:
         format: email
         maxLength: 255
         pattern: >-
-          ^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
+          ^([\\w-]+(?:[\\.\\+][\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$
   support_response:
     type: object
     properties:
