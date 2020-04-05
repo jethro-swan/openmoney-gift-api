@@ -8,7 +8,7 @@ if(DATABASE_TYPE == 'couchbase') {
   var PouchDB = require('pouchdb');
       PouchDB.plugin(require('pouchdb-find'));
   var db = new PouchDB('./database');
-  PouchDB.debug.enable('pouchdb:find')
+  // PouchDB.debug.enable('pouchdb:find')
 
   exports.findByTemplateId = function(templateId, callback){
     db.get(templateId, {attachments: true}).then(function(card){

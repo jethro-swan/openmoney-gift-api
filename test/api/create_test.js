@@ -1,7 +1,7 @@
 'use strict';
 var fs = require('fs');
 
-require('dotenv').load();
+require('dotenv').config();
 
 function copyData(savPath) {
     fs.readFile(savPath, 'utf8', function (err, data) {

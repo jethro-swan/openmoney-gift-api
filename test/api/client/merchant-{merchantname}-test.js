@@ -6,7 +6,7 @@ var supertest = require('supertest');
 var api = supertest('http://localhost:9090'); // supertest init;
 var expect = chai.expect;
 
-require('dotenv').load();
+require('dotenv').config();
 
 var request = {};
 request.merchantname = process.env.MERCHANTNAME + process.env.TIME;
@@ -45,7 +45,6 @@ describe('/merchants/{merchantname}', function() {
                 "type": "string",
                 "format": "email",
                 "maxLength": 255,
-                "pattern": "^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$"
               },
               "email_notifications": {
                 "type": "boolean"

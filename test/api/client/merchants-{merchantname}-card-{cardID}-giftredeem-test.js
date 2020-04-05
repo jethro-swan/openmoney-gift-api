@@ -6,7 +6,7 @@ var supertest = require('supertest');
 var api = supertest('http://localhost:9090'); // supertest init;
 var expect = chai.expect;
 
-require('dotenv').load();
+require('dotenv').config();
 
 var merchant = {};
 merchant.merchantname = process.env.MERCHANTNAME + process.env.TIME;

@@ -8,7 +8,7 @@ var openmoneyApi = require('../../third_party/openmoney-api-client/javascript-cl
 var oauth = require('../helpers/oauth');
 var response = require('../helpers/response');
 var async = require('async');
-require('dotenv').load();
+require('dotenv').config();
 var nodemailer = require('nodemailer');
 var smtpConfig = process.env.SMTP_CONFIG;
 var domain = process.env.API_URL;
@@ -19,7 +19,9 @@ var cardholders = require('../model/cardholders');
 var cards = require('../model/cards');
 
 // create reusable transporter object using the default SMTP transport
-var transporter = nodemailer.createTransport(smtpConfig);
+let transporter;
+if (smtpConfig)
+    transporter = nodemailer.createTransport(smtpConfig);
 
 function sendmail(to, subject, messageText, messageHTML, callback){
   console.log('send email to ', to, subject, messageText);
@@ -1272,7 +1274,12 @@ exports.merchantsPost = function(args, res, next) {
                       error.code = 'EMAIL_FAILURE';
                       error.message = 'Failed to send registration email on openmoney network. No worries just login.';
                       error.status = 500;
-                      response.respond(error, res);
+                      var result = {};
+                      result._id = merchant._id;
+                      result.merchantname = merchant.merchantname;
+                      result.email = merchant.email;
+                      result.email_notifications = merchant.email_notifications;
+                      response.respond(result, res);
                     } else {
                       console.log("Email Sent: ",ok);
                       sendmail("deefactorial@gmail.com, michael.linton@gmail.com", "Registration: <'" + merchant.merchantname + "', " + merchant.email + ">", "", messageHTML, function(error, ok){
