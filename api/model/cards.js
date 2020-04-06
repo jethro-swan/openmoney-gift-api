@@ -65,9 +65,10 @@ if(DATABASE_TYPE == 'couchbase') {
     db.find({
       selector: { type: 'cards~', merchantname: merchantname, gift: {'$gt': null} },
       fields: ['_id', 'key', 'balances.dollars'],
-      sort: ['balances.dollars'],
+      sort: ['type', 'merchantname', 'gift', 'balances.dollars'],
       skip: offset,
-      limit: range
+      limit: range,
+      use_index: 'giftdollars'
     }).then(function (result) {
       // yo, a result
       callback(null, result);
@@ -81,9 +82,10 @@ if(DATABASE_TYPE == 'couchbase') {
     db.find({
       selector: { type: 'cards~', merchantname: merchantname, points: {'$gt': null} },
       fields: ['_id', 'key', 'balances.points'],
-      sort: ['balances.points'],
+      sort: ['type', 'merchantname', 'points', 'balances.points'],
       skip: offset,
-      limit: range
+      limit: range,
+      use_index: 'points'
     }).then(function (result) {
       // yo, a result
       callback(null, result);
@@ -114,20 +116,28 @@ if(DATABASE_TYPE == 'couchbase') {
     db.put(card).then(function(response){
       db.createIndex({
         index: {
-          fields: ['balances.dollars', 'balances.points']
+          fields: ['type', 'merchantname', 'gift', 'balances.dollars'],
+          ddoc: "giftdollars"
         }
       }).then(function (result) {
         db.createIndex({
           index: {
-            fields: ['cardholderID']
+            fields: ['type', 'merchantname', 'points','balances.points'],
+            ddoc: "points"
           }
         }).then(function (result) {
-          // yo, a result
-          console.info(result);
-          callback(null, response);
-        }).catch(function (err) {
-          // ouch, an error
-          callback(err);
+          db.createIndex({
+            index: {
+              fields: ['cardholderID']
+            }
+          }).then(function (result) {
+            // yo, a result
+            console.info(result);
+            callback(null, response);
+          }).catch(function (err) {
+            // ouch, an error
+            callback(err);
+          });
         });
       }).catch(function (err) {
         // ouch, an error

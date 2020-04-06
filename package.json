@@ -39,6 +39,10 @@
     "start": "DEBUG=swagger-tools:* node app.js",
     "test": "mocha",
     "test:run": "./test.sh",
-    "test:merchants": "./test_merchants.sh"
+    "test:merchants": "./test_merchants.sh",
+    "test:employees": "./test_employees.sh",
+    "test:cardholders": "./test_cardholders.sh",
+    "test:cards": "./test_cards.sh",
+    "test:reports": "./test_reports.sh"
   }
 }
