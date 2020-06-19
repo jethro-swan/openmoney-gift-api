@@ -2,13 +2,13 @@
 
 OpenMoney Gift API Service
 
-The OpenMoney Gift API is a variant of the [OpenMoney API]https://github.com/jethro-swan/openmoney-api/ 
-for use with the [OpenMoney Gift]https://github.com/jethro-swan/openmoney-gift/ interface.
+The OpenMoney Gift API is a variant of the [OpenMoney API]https://github.com/om-tools/openmoney-api/ 
+for use with the [OpenMoney Gift]https://github.com/om-tools/openmoney-gift/ interface.
 
 ### Install locally
 
 ```sh
-git clone https://github.com/jethro-swan/openmoney-gift-api
+git clone https://github.com/om-tools/openmoney-gift-api
 cd openmoney-gift-api
 npm install
 cp sample.env .env
